@@ -67,7 +67,7 @@ class LinearRegression2d:
         """
         X = np.array(X)
         y = np.array(y)
-        y_hat_error = np.mean((self.prediction(X)-y)**2)
+        y_hat_error = np.mean((self.predict(X)-y)**2)
         y_mean_error = np.mean((np.mean(y)- y)**2)
         self.accuracy = 1 - (y_hat_error/y_mean_error)
         return self.accuracy
