@@ -16,7 +16,7 @@ Subpackages:
      
   Includes:   
   ### LinearRegression
-  Finds the line of best fit. Currently only works in 2d
+  Does least squares regression. Now works in multiple dimensions
 ## neighbours
   A group of modes that used nearest neighbours type algorithms   
      
