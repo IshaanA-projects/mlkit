@@ -22,5 +22,5 @@ Subpackages:
      
   Includes:   
   ### KNN
-  A module that can perform K Nearest Neighbours Classification
+  A module that can perform K Nearest Neighbours Classification and Regression
 
