@@ -4,13 +4,15 @@ Module used for Linear Regression
 
 import numpy as np
 
-class LinearRegression2d:
+class LinearRegression:
     """
-    A class that can be used for Linear Regression when both features and labels are 1 dimensional
+    A class that can be used for Linear Regression
     """
     def __init__(self):
-        self.slope = None
-        self.y_int = None
+        self.slopes = None
+        self.intercept = None
+        self.parameters = None
+        
     def fit(self, X, y):
         """
         
@@ -24,14 +26,23 @@ class LinearRegression2d:
 
         Returns
         -------
-        Changes parameters inplace. Calculates slope and intercept of line of best fit when features and labels are 1 dimensional data
+        Changes parameters inplace. Calculates parameters of model based on data
 
         """
         X = np.array(X)
         y = np.array(y)
-        self.slope = ((np.mean(X)*np.mean(y))-(np.mean(X*y)))/((np.mean(X)*np.mean(X))-(np.mean(X**2)))
-        self.y_int = np.mean(y)- self.slope*np.mean(X)
+        
+        if X.ndim == 1:
+            X = X.reshape(-1, 1)  # Reshapes if X is 1D to allow for the calculations to work
+        
+        X = np.insert(X, 0, 1, axis=1) # Adding extra column for an intercept
+        
+        self.parameters, _, _, _ = np.linalg.lstsq(X, y, rcond=None)
+        self.intercept = self.parameters[0]
+        self.slopes = self.parameters[1:]
+        
         return 
+    
     def predict(self, x):
         """
         
@@ -47,7 +58,16 @@ class LinearRegression2d:
 
         """
         x = np.array(x)
-        return x * self.slope + self.y_int
+        
+        if x.ndim == 1:
+            x = x.reshape(1, -1)  # Single point becomes 1 row
+            
+        y_pred = x @ self.slopes + self.intercept
+        
+        if y_pred.shape[0] == 1:
+            return y_pred[0]   # Returns a float instead of a one element array
+        
+        return y_pred
     
     def score(self, X, y):
         """
